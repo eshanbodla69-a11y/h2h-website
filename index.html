@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home-to-Home | H2H</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{--primary:#7e5c44;--secondary:#d4a373;--light:#fdf6e3;--dark:#3c2e26}
+    *{box-sizing:border-box;margin:0;font-family:"Segoe UI",Arial,sans-serif}
+    html{scroll-behavior:smooth}
+    body{background:var(--light);color:var(--dark)}
+    header{position:sticky;top:0;z-index:1000;background:var(--primary);color:#fff;padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    header h1{font-size:1.6rem;letter-spacing:1px}
+    nav button{background:none;border:2px solid #fff;color:#fff;padding:.4rem .9rem;margin-left:.5rem;border-radius:20px;cursor:pointer;transition:.3s}
+    nav button:hover{background:#fff;color:var(--primary)}
+    .hero{padding:5rem 1rem;text-align:center;background:url("https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1350&q=80") center/cover no-repeat;color:#fff}
+    .hero h2{font-size:2.4rem;margin-bottom:1rem;text-shadow:1px 1px 3px rgba(0,0,0,.6)}
+    .search-bar{max-width:520px;margin:1.5rem auto;display:flex;border-radius:30px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    .search-bar input{flex:1;border:none;padding:.9rem 1.3rem;font-size:1rem}
+    .search-bar button{background:var(--secondary);color:#fff;border:none;padding:0 1.5rem;font-weight:bold;cursor:pointer}
+    .cards{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;padding:3rem 1rem}
+    .card{background:#fff;border-radius:12px;overflow:hidden;width:280px;box-shadow:0 4px 10px rgba(0,0,0,.15);transition:.3s;opacity:1}
+    .card.hide{opacity:.3;pointer-events:none}
+    .card img{width:100%;height:180px;object-fit:cover}
+    .card-body{padding:.8rem 1rem}
+    .card h3{font-size:1.2rem;margin-bottom:.3rem}
+    .card p{margin-bottom:.5rem;color:#555;font-size:.9rem}
+    .card a{display:inline-block;margin-top:.5rem;background:var(--primary);color:#fff;padding:.45rem 1rem;border-radius:20px;text-decoration:none;font-size:.85rem;transition:.3s}
+    .card a:hover{background:var(--dark)}
+    footer{text-align:center;padding:1.5rem;background:var(--dark);color:#fff;font-size:.9rem}
+    footer a{color:var(--secondary);text-decoration:none}
+    #loadMore{display:block;margin:2rem auto;padding:.7rem 2rem;background:var(--secondary);color:#fff;border:none;border-radius:25px;font-size:1rem;cursor:pointer}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>H2H – Home to Home</h1>
+    <nav>
+      <button onclick="document.getElementById('listModal').style.display='block'">List Property</button>
+    </nav>
+  </header>
+
+  <section class="hero" id="top">
+    <h2>Find your next stay, anywhere.</h2>
+    <div class="search-bar">
+      <input id="searchInput" placeholder="Search city, country, or hotel..." onkeyup="liveSearch()">
+      <button onclick="liveSearch()">Search</button>
+    </div>
+  </section>
+
+  <section class="cards" id="cardContainer"></section>
+  <button id="loadMore" onclick="loadMore()">Load more hotels</button>
+
+  <footer class="contact">
+    © 2025 Home-to-Home • 
+    <a href="tel:+15515794132">+1 (551) 579-4132</a> • 
+    <a href="mailto:ceo@asaanpay.shop">ceo@asaanpay.shop</a>
+  </footer>
+
+  <script>
+    const allHotels = [
+      {key:"bali indonesia villa luxury pool", img:"https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=60", title:"Luxury Villa, Bali", desc:"Private pool · 4 beds · $120/night"},
+      {key:"istanbul turkey loft city apartment", img:"https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=60", title:"City Loft, Istanbul", desc:"Fast Wi-Fi · 2 beds · $55/night"},
+      {key:"murree pakistan cabin cozy fireplace hills", img:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60", title:"Cozy Cabin, Murree", desc:"Fireplace · 3 beds · $70/night"},
+      {key:"paris france hotel eiffel tower", img:"https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=800&q=60", title:"Boutique Hotel, Paris", desc:"Near Eiffel · 2 beds · €180/night"},
+      {key:"dubai uae hotel luxury pool", img:"https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=60", title:"5-Star Resort, Dubai", desc:"Pool & beach · 3 beds · $250/night"},
+      {key:"london uk apartment city center", img:"https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=60", title:"Central Apt, London", desc:"Tube 2 min · 2 beds · £150/night"},
+      {key:"tokyo japan hotel shibuya", img:"https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=800&q=60", title:"Modern Hotel, Tokyo", desc:"Shibuya · 1 bed · ¥16000/night"},
+      {key:"new york usa manhattan midtown", img:"https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?auto=format&fit=crop&w=800&q=60", title:"Midtown Hotel, NYC", desc:"Times Sq 5 min · 2 beds · $220/night"},
+      {key:"sydney australia opera house view", img:"https://images.unsplash.com/photo-1506973035872-942126b49185?auto=format&fit=crop&w=800&q=60", title:"Harbour View, Sydney", desc:"Opera view · 3 beds · AU$290/night"},
+      {key:"rome italy colosseum nearby", img:"https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=60", title:"B&B Near Colosseum", desc:"Walk 5 min · 2 beds · €95/night"},
+      {key:"cairo egypt nile view", img:"https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=800&q=60", title:"Nile-View Hotel, Cairo", desc:"Pyramids 20 min · 3 beds · $110/night"},
+      {key:"toronto canada downtown condo", img:"https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=800&q=60", title:"Downtown Condo, Toronto", desc:"CN Tower view · 2 beds · CA$180/night"},
+      {key:"berlin germany mitte apartment", img:"https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=60", title:"Mitte Apt, Berlin", desc:"Brandenburg Gate 10 min · 2 beds · €88/night"},
+      {key:"moscow russia red square kremlin", img:"https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=800&q=60", title:"Historic Hotel, Moscow", desc:"Red Square 5 min · 3 beds · ₽9500/night"},
+      {key:"seoul south korea gangnam", img:"https://images.unsplash.com/photo-1517154421773-052853c4d2f3?auto=format&fit=crop&w=800&q=60", title:"Gangnam Hotel, Seoul", desc:"Metro 2 min · 2 beds · ₩140000/night"},
+      {key:"singapore marina bay orchard", img:"https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=60", title:"Marina View, Singapore", desc:"Orchard 10 min · 2 beds · SG$260/night"},
+      {key:"barcelona spain gaudi sagrada familia", img:"https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=60", title:"Art-Nouveau Apt, Barcelona", desc:"Sagrada Familia 5 min · 3 beds · €125/night"},
+      {key:"amsterdam netherlands canal house", img:"https://images.unsplash.com/photo-1552550049-db097c9480d1?auto=format&fit=crop&w=800&q=60", title:"Canal House, Amsterdam", desc:"Centraal 10 min · 2 beds · €140/night"}
+    ];
+    let current = 0, step = 20;
+    function render(arr){
+      const container = document.getElementById('cardContainer');
+      arr.forEach(h=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.key = h.key;
+        card.innerHTML = `
+          <img src="${h.img}" alt="${h.title}">
+          <div class="card-body">
+            <h3>${h.title}</h3>
+            <p>${h.desc}</p>
+            <a href="https://wa.me/15515794132?text=Hi%2C%20I%20want%20to%20book%20${encodeURIComponent(h.title)}" target="_blank">Book now</a>
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+    function loadMore(){
+      const next = allHotels.slice(current, current + step);
+      render(next);
+      current += step;
+      if(current >= allHotels.length) document.getElementById('loadMore').style.display = 'none';
+    }
+    function liveSearch(){
+      const val = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(c=>{
+        c.classList.toggle('hide', !c.dataset.key.includes(val));
+      });
+    }
+    loadMore(); // first 20
+  </script>
+</body>
+</html>
