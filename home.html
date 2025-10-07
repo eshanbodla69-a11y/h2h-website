@@ -41,6 +41,19 @@
     .card p{margin-bottom:.5rem;color:#555;font-size:.9rem}
     .card a{display:inline-block;margin-top:.5rem;background:var(--primary);color:#fff;padding:.45rem 1rem;border-radius:20px;text-decoration:none;font-size:.85rem;transition:.3s}
     .card a:hover{background:var(--dark)}
+    #loadMore {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.8rem 2rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #loadMore:hover { background: var(--dark); }
     footer{text-align:center;padding:1.5rem;background:var(--dark);color:#fff;font-size:.9rem}
     footer a{color:var(--secondary);text-decoration:none}
   </style>
@@ -49,9 +62,7 @@
   <header>
     <div class="brand">
       <svg width="200" height="34" viewBox="0 0 200 34" xmlns="http://www.w3.org/2000/svg">
-        <style>
-          .logo{font-family:'Helvetica Neue Condensed Black','Arial Black',sans-serif;fill:#fff;letter-spacing:-1px}
-        </style>
+        <style>.logo{font-family:'Helvetica Neue Condensed Black','Arial Black',sans-serif;fill:#fff;letter-spacing:-1px}</style>
         <text x="0" y="24" class="logo" font-size="20">HOME TO HOME</text>
         <text x="0" y="32" class="logo" font-size="9">H2H</text>
       </svg>
@@ -74,13 +85,13 @@
   <button id="loadMore" onclick="loadMore()">Load more hotels</button>
 
   <footer class="contact">
-    © 2025 Home-to-Home • 
+    ©️ 2025 Home-to-Home • 
     <a href="tel:+15515794132">+1 (551) 579-4132</a> • 
     <a href="mailto:ceo@asaanpay.shop">ceo@asaanpay.shop</a>
   </footer>
 
   <script>
-    const allHotels=[
+    const allHotels = [
       {key:"bali indonesia villa luxury pool",img:"https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=60",title:"Luxury Villa, Bali",desc:"Private pool · 4 beds · $120/night"},
       {key:"istanbul turkey loft city apartment",img:"https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=60",title:"City Loft, Istanbul",desc:"Fast Wi-Fi · 2 beds · $55/night"},
       {key:"murree pakistan cabin cozy fireplace hills",img:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60",title:"Cozy Cabin, Murree",desc:"Fireplace · 3 beds · $70/night"},
@@ -92,14 +103,16 @@
       {key:"sydney australia opera house view",img:"https://images.unsplash.com/photo-1506973035872-942126b49185?auto=format&fit=crop&w=800&q=60",title:"Harbour View, Sydney",desc:"Opera view · 3 beds · AU$290/night"},
       {key:"rome italy colosseum nearby",img:"https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=60",title:"B&B Near Colosseum",desc:"Walk 5 min · 2 beds · €95/night"}
     ];
-    let current=0,step=20;
+
+    let current = 0, step = 4;
+
     function render(arr){
-      const container=document.getElementById('cardContainer');
-      arr.forEach(h=>{
-        const card=document.createElement('div');
-        card.className='card';
-        card.dataset.key=h.key;
-        card.innerHTML=`
+      const container = document.getElementById('cardContainer');
+      arr.forEach(h => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.key = h.key;
+        card.innerHTML = `
           <img src="${h.img}" alt="${h.title}">
           <div class="card-body">
             <h3>${h.title}</h3>
@@ -109,18 +122,39 @@
         container.appendChild(card);
       });
     }
+
     function loadMore(){
-      const next=allHotels.slice(current,current+step);
+      const next = allHotels.slice(current, current + step);
       render(next);
-      current+=step;
-      if(current>=allHotels.length)document.getElementById('loadMore').style.display='none';
+      current += step;
+      if(current >= allHotels.length) {
+        document.getElementById('loadMore').style.display = 'none';
+      }
     }
+
     function liveSearch(){
-      const val=document.getElementById('searchInput').value.toLowerCase();
-      document.querySelectorAll('.card').forEach(c=>{
-        c.classList.toggle('hide',!c.dataset.key.includes(val));
+      const val = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      let visible = 0;
+      cards.forEach(c => {
+        const match = c.dataset.key.toLowerCase().includes(val);
+        c.classList.toggle('hide', !match);
+        if (match) visible++;
       });
+      const noRes = document.getElementById('noResults');
+      if (visible === 0 && !noRes) {
+        const msg = document.createElement('div');
+        msg.id = 'noResults';
+        msg.textContent = 'No hotels found 😢';
+        msg.style.textAlign = 'center';
+        msg.style.fontSize = '1.2rem';
+        msg.style.marginTop = '2rem';
+        document.getElementById('cardContainer').appendChild(msg);
+      } else if (visible > 0 && noRes) {
+        noRes.remove();
+      }
     }
+
     render(allHotels.slice(0, step)); // initial load
   </script>
 </body>
