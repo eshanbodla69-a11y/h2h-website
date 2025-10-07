@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>H2H – Doors to Heaven (8K Cinematic)</title>
+  <title>H2H – Golden Portal to Heaven</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     *{box-sizing:border-box;margin:0}
@@ -10,29 +10,26 @@
     #cinema{
       position:fixed;inset:0;
       background:#000;
-      perspective:1500px;
+      perspective:1600px;
       display:flex;align-items:center;justify-content:center;
     }
     .door{
-      width:46vw;height:86vh;
-      background:url(https://cdn.pixabay.com/video/2023/04/15/157820-826488891.jpg) center/cover;
-      box-shadow:0 0 60px #fff8;
+      width:44vw;height:84vh;
+      background:url(https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=1080&q=80) center/cover;
+      box-shadow:0 0 80px #fff8, inset 0 0 120px #fff4;
       transform-origin:center;
-      transition:transform 2.2s cubic-bezier(.7,.1,.2,1);
-      border-radius:12px;
+      transition:transform 3.5s cubic-bezier(.6,.05,.3,1), filter 3s;
+      border-radius:14px;
+      filter:brightness(.8);
     }
-    .door.left{transform:rotateY(-90deg)}
-    .door.right{transform:rotateY(90deg)}
-    #cinema.play .door.left{transform:rotateY(-150deg)}
-    #cinema.play .door.right{transform:rotateY(150deg)}
+    .door.left{transform:rotateY(-92deg)}
+    .door.right{transform:rotateY(92deg)}
+    #cinema.play .door.left{transform:rotateY(-175deg); filter:brightness(1.3)}
+    #cinema.play .door.right{transform:rotateY(175deg); filter:brightness(1.3)}
     .heaven{
       position:absolute;inset:0;
-      opacity:0;
-      transition:opacity 2s 1.8s;
-      pointer-events:none;
-    }
-    .heaven video{
-      width:100%;height:100%;object-fit:cover;
+      background:url(https://images.unsplash.com/photo-1505506874110-6a7a69069a08?auto=format&fit=crop&w=1600&q=80) center/cover;
+      opacity:0;transition:opacity 2.5s 2.2s;
     }
     .skip{
       position:absolute;bottom:30px;right:30px;
@@ -47,17 +44,18 @@
   <div id="cinema" class="play">
     <div class="door left"></div>
     <div class="door right"></div>
-    <div class="heaven">
-      <video autoplay muted loop>
-        <source src="https://cdn.pixabay.com/vimeo/769870688/heaven-38823.mp4?width=3840&hash=8e5d9e5b5b5b5b5b5b5b5b5b5b5b5b5b5" type="video/mp4">
-      </video>
-    </div>
+    <div class="heaven"></div>
     <button class="skip" onclick="goHome()">Skip</button>
   </div>
 
+  <!-- HEAVENLY CHOIR AUDIO -->
+  <audio id="choir" autoplay>
+    <source src="https://cdn.pixabay.com/audio/2022/02/21/audio_2c1b1a5c66.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     function goHome(){window.location.replace('home.html')}
-    setTimeout(goHome,7000); // auto-redirect after 7s
+    setTimeout(goHome,8500); // longer drama (8.5s)
   </script>
 </body>
 </html>
