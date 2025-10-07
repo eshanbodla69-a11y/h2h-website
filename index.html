@@ -62,6 +62,8 @@
     }
     #mainSite{
       position:fixed;inset:0;
+      width:100vw;height:100vh;
+      border:none;
       background:#fff;
       opacity:0;
       transition:opacity 1s ease;
@@ -81,7 +83,12 @@
     <source src="https://cdn.pixabay.com/audio/2022/02/21/audio_2c1b1a5c66.mp3" type="audio/mpeg">
   </audio>
 
-  <iframe id="mainSite" src="home.html" frameborder="0"></iframe>
+  <iframe
+    id="mainSite"
+    src="home.html"
+    frameborder="0"
+    style="position:fixed;inset:0;width:100vw;height:100vh;border:none">
+  </iframe>
 
   <script>
     function enterSite(){
