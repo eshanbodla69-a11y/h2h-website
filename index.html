@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>H2H – Doors to Heaven (8K Cinematic)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *{box-sizing:border-box;margin:0}
+    html,body{height:100%;overflow:hidden;background:#000}
+    #cinema{
+      position:fixed;inset:0;
+      background:#000;
+      perspective:1500px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .door{
+      width:46vw;height:86vh;
+      background:url(https://cdn.pixabay.com/video/2023/04/15/157820-826488891.jpg) center/cover;
+      box-shadow:0 0 60px #fff8;
+      transform-origin:center;
+      transition:transform 2.2s cubic-bezier(.7,.1,.2,1);
+      border-radius:12px;
+    }
+    .door.left{transform:rotateY(-90deg)}
+    .door.right{transform:rotateY(90deg)}
+    #cinema.play .door.left{transform:rotateY(-150deg)}
+    #cinema.play .door.right{transform:rotateY(150deg)}
+    .heaven{
+      position:absolute;inset:0;
+      opacity:0;
+      transition:opacity 2s 1.8s;
+      pointer-events:none;
+    }
+    .heaven video{
+      width:100%;height:100%;object-fit:cover;
+    }
+    .skip{
+      position:absolute;bottom:30px;right:30px;
+      background:#fff3;color:#fff;border:1px solid #fff6;
+      padding:.7rem 1.4rem;border-radius:30px;cursor:pointer;
+      font-size:1rem;letter-spacing:1px;backdrop-filter:blur(4px);
+    }
+    .skip:hover{background:#fff5}
+  </style>
+</head>
+<body>
+  <div id="cinema" class="play">
+    <div class="door left"></div>
+    <div class="door right"></div>
+    <div class="heaven">
+      <video autoplay muted loop>
+        <source src="https://cdn.pixabay.com/vimeo/769870688/heaven-38823.mp4?width=3840&hash=8e5d9e5b5b5b5b5b5b5b5b5b5b5b5b5b5" type="video/mp4">
+      </video>
+    </div>
+    <button class="skip" onclick="goHome()">Skip</button>
+  </div>
+
+  <script>
+    function goHome(){window.location.replace('home.html')}
+    setTimeout(goHome,7000); // auto-redirect after 7s
+  </script>
+</body>
+</html>
