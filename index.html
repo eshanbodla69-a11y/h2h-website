@@ -3,99 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <title>H2H – Enter the Experience</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    *{box-sizing:border-box;margin:0}
-    html,body{height:100%;overflow:hidden;background:#000}
-    #cinema{
-      position:fixed;inset:0;
-      display:flex;align-items:center;justify-content:center;
-      background:#000;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .bg{
-      position:absolute;inset:0;
-      background:url(https://cdn.pixabay.com/vimeo/769870688/heaven-38823.mp4?width=3840&hash=8e5d9e5b5b5b5b5b5b5b5b5b5b5b5b5) center/cover;
-      filter:brightness(.7) saturate(1.2);
-      animation:zoom 12s ease-in-out infinite;
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #000;
     }
-    @keyframes zoom{
-      0%,100%{transform:scale(1)}
-      50%{transform:scale(1.08)}
+
+    /* ========== CINEMATIC INTRO ========== */
+    #cinema {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: #000;
+      transition: opacity 1s ease;
+      z-index: 10;
     }
-    .overlay{
-      position:absolute;inset:0;
-      background:radial-gradient(circle, transparent 40%, #000 100%);
+
+    /* Video background */
+    video.bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7) saturate(1.2);
+      animation: zoom 12s ease-in-out infinite;
+      z-index: -1;
     }
-    .title{
-      position:relative;
-      font-family:'Helvetica Neue Condensed Black', 'Arial Black', sans-serif;
-      color:#fff;
-      font-size:3.5rem;
-      letter-spacing:-2px;
-      text-align:center;
-      animation:titleFade 4s ease forwards;
-      text-shadow:0 0 20px rgba(255,255,255,.4);
+
+    @keyframes zoom {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
     }
-    @keyframes titleFade{
-      0%{opacity:0;transform:translateY(20px)}
-      100%{opacity:1;transform:translateY(0)}
+
+    /* Overlay for vignette effect */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, transparent 40%, #000 100%);
+      z-index: 0;
     }
-    .enter{
-      position:absolute;bottom:10%;left:50%;transform:translateX(-50%);
-      background:transparent;
-      color:#fff;
-      border:2px solid #fff;
-      padding:1rem 2.5rem;
-      font-size:1.1rem;
-      letter-spacing:3px;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:all .4s cubic-bezier(.22,.61,.36,1);
-      border-radius:30px;
-      backdrop-filter:blur(6px);
+
+    /* Title text */
+    .title {
+      position: relative;
+      font-family: 'Helvetica Neue Condensed Black', 'Arial Black', sans-serif;
+      color: #fff;
+      font-size: 3.5rem;
+      letter-spacing: -2px;
+      text-align: center;
+      animation: titleFade 3s ease forwards;
+      text-shadow: 0 0 20px rgba(255, 255, 255, .4);
+      z-index: 1;
     }
-    .enter:hover{
-      background:#fff;
-      color:#000;
-      letter-spacing:4px;
-      box-shadow:0 0 30px #fff;
+
+    @keyframes titleFade {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
-    #mainSite{
-      position:fixed;inset:0;
-      width:100vw;height:100vh;
-      border:none;
-      background:#fff;
-      opacity:0;
-      transition:opacity 1s ease;
+
+    /* Enter button */
+    .enter {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.22,.61,.36,1);
+      border-radius: 30px;
+      backdrop-filter: blur(6px);
+      z-index: 1;
+    }
+
+    .enter:hover {
+      background: #fff;
+      color: #000;
+      letter-spacing: 4px;
+      box-shadow: 0 0 30px #fff;
+    }
+
+    /* ========== MAIN SITE ========== */
+    #mainSite {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      background: #fff;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease, visibility 1s ease;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
+
+  <!-- CINEMATIC INTRO -->
   <div id="cinema">
-    <div class="bg"></div>
+    <video autoplay muted loop playsinline class="bg">
+      <source src="https://cdn.pixabay.com/vimeo/769870688/heaven-38823.mp4" type="video/mp4">
+    </video>
     <div class="overlay"></div>
     <div class="title">HOME TO HOME</div>
     <button class="enter" onclick="enterSite()">Enter</button>
   </div>
 
-  <!-- Heavenly choir -->
-  <audio id="choir" autoplay loop>
+  <!-- Heavenly choir (starts on button click for autoplay safety) -->
+  <audio id="choir" loop>
     <source src="https://cdn.pixabay.com/audio/2022/02/21/audio_2c1b1a5c66.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Main Website -->
   <iframe
     id="mainSite"
     src="home.html"
-    frameborder="0"
-    style="position:fixed;inset:0;width:100vw;height:100vh;border:none">
+    frameborder="0">
   </iframe>
 
   <script>
-    function enterSite(){
-      document.getElementById('cinema').style.opacity='0';
-      document.getElementById('mainSite').style.opacity='1';
-      document.getElementById('choir').volume=0; // fade out audio
-      setTimeout(()=>{document.getElementById('cinema').remove()},1000);
+    function enterSite() {
+      // Show main site
+      const cinema = document.getElementById('cinema');
+      const mainSite = document.getElementById('mainSite');
+      const choir = document.getElementById('choir');
+
+      // Play audio (will now work because user clicked)
+      choir.volume = 0.7;
+      choir.play().catch(err => console.log("Autoplay blocked:", err));
+
+      // Fade out intro
+      cinema.style.opacity = '0';
+      mainSite.style.visibility = 'visible';
+      mainSite.style.opacity = '1';
+
+      // Smooth audio fade-in (optional)
+      let vol = 0.0;
+      let fade = setInterval(() => {
+        if (vol < 0.7) {
+          vol += 0.05;
+          choir.volume = vol;
+        } else {
+          clearInterval(fade);
+        }
+      }, 100);
+
+      // Remove cinema div after transition
+      setTimeout(() => {
+        cinema.remove();
+      }, 1100);
     }
   </script>
 </body>
