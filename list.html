@@ -2,25 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>List Your Property – H2H</title>
+  <title>List Your Property on H2H</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root{--primary:#7e5c44;--secondary:#d4a373;--light:#fdf6e3;--dark:#3c2e26}
     *{box-sizing:border-box;margin:0;font-family:"Segoe UI",Arial,sans-serif}
-    body{background:var(--light);color:var(--dark);line-height:1.6}
-    header{background:var(--primary);color:#fff;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
-    header a{color:#fff;text-decoration:none;font-size:1.1rem}
+    html{scroll-behavior:smooth}
+    body{background:var(--light);color:var(--dark)}
+    header{position:sticky;top:0;z-index:1000;background:var(--primary);color:#fff;padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    header h1{font-size:1.5rem;letter-spacing:1px}
+    nav a{background:none;border:2px solid #fff;color:#fff;padding:.4rem .9rem;margin-left:.5rem;border-radius:20px;text-decoration:none;font-size:.9rem;transition:.3s}
+    nav a:hover{background:#fff;color:var(--primary)}
     main{max-width:800px;margin:3rem auto;padding:0 1rem}
     h2{margin-bottom:1rem;color:var(--primary)}
     ul{margin-left:1.5rem}
-    footer{text-align:center;padding:2rem;background:var(--dark);color:#fff;font-size:.9rem}
+    footer{text-align:center;padding:1.5rem;background:var(--dark);color:#fff;font-size:.9rem}
     footer a{color:var(--secondary);text-decoration:none}
   </style>
 </head>
 <body>
   <header>
     <h1>H2H – Home to Home</h1>
-    <a href="index.html">← Back to Home</a>
+    <nav>
+      <a href="index.html">← Back to Home</a>
+    </nav>
   </header>
 
   <main>
